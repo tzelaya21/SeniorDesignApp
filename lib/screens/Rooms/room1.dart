@@ -991,7 +991,7 @@ class Room1PageState extends State<Room1> {
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
+                                                  fontSize: 15,
                                                   letterSpacing: 0.0,
                                                   color: _gettempcolor1(),
                                                 ),
@@ -1001,7 +1001,7 @@ class Room1PageState extends State<Room1> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding: const EdgeInsets.all(1.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
                                       _gettempcolor1(),
@@ -1009,8 +1009,8 @@ class Room1PageState extends State<Room1> {
                                       _gettempcolor3()
                                     ], angle: _gettempangle()),
                                     child: SizedBox(
-                                      width: 118,
-                                      height: 118,
+                                      width: 125,
+                                      height: 125,
                                     ),
                                   ),
                                 ),
@@ -1051,7 +1051,7 @@ class Room1PageState extends State<Room1> {
                                           style: TextStyle(
                                             fontFamily: "Bosch",
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                            fontSize: 15,
                                             letterSpacing: 0.0,
                                             color: Colors.blue[300],
                                           ),
@@ -1075,7 +1075,7 @@ class Room1PageState extends State<Room1> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding: const EdgeInsets.all(1.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
                                       _gettempcolor1(),
@@ -1083,8 +1083,8 @@ class Room1PageState extends State<Room1> {
                                       _gettempcolor3()
                                     ], angle: _gettempangle()),
                                     child: SizedBox(
-                                      width: 118,
-                                      height: 118,
+                                      width: 125,
+                                      height: 125,
                                     ),
                                   ),
                                 ),

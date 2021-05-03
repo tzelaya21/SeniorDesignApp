@@ -144,7 +144,7 @@ class _DrawerState extends State<MaterialDrawer> {
                               : false,
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 330.0, 0.0, 0.0),
+                          padding: EdgeInsets.fromLTRB(0.0, 300.0, 0.0, 0.0),
                           child: DrawerTile(
                             icon: Icons.settings,
                             onTap: () {

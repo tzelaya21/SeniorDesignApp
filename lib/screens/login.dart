@@ -387,7 +387,7 @@ class _LoginPageState extends State<Login> {
                   )),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(160.0, 10.0, 0.0, 0.0),
+              padding: EdgeInsets.fromLTRB(157.0, 10.0, 0.0, 0.0),
               child: Switch.adaptive(
                 value: switchValueOne,
                 onChanged: (bool newValue) => {
