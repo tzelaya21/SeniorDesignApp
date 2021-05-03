@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
@@ -19,23 +20,50 @@ class Home extends StatefulWidget {
 class HomePageState extends State<Home> {
   String user, imgUrl;
   bool darkmode = false;
-  Map<String, dynamic> values = {
-    'AQI': 41,
-    'O2': '72%',
-    'CO2': '4%',
-    'Dust': '10%',
-    'Temp': 13.9,
-    'PPM': 500.12
-  };
+  Timer timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => _getupdates());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  // ignore: avoid_init_to_null
+  Map<String, dynamic> values = null;
+  /*{
+    'AQI': 0.0,
+    'O2': 0.0,
+    'CO2': 0.0,
+  };*/
   // ignore: non_constant_identifier_names
   int Count = 0;
   String url =
-      'https://9pdvqwmof0.execute-api.us-east-1.amazonaws.com/tester_stage/airQ';
+      'https://biani1hvil.execute-api.us-east-1.amazonaws.com/final_testing_stage';
 
   Future<Map> makeRequest() async {
     var response = await http.get(url);
     var extractData = jsonDecode(response.body);
-    return extractData;
+    return jsonDecode(extractData['body']);
+  }
+
+  _getupdates() async {
+    var val = await makeRequest();
+    setState(() {
+      values = val ?? null;
+      Map<String, dynamic> value = {
+        'AQI': double.parse(values['AQI'].toString()),
+        'O2': double.parse(values['MQ2'].toString()),
+        'CO2': double.parse(values['MQ9'].toString()),
+      };
+      (values.length == 7)
+          ? values.addEntries(value.entries)
+          : print('Read failed.');
+    });
   }
 
   _getusername() async {
@@ -50,11 +78,11 @@ class HomePageState extends State<Home> {
     setState(() {
       values = val ?? null;
       Map<String, dynamic> value = {
-        'AQI': 41,
-        'O2': '72%',
-        'CO2': '4%',
+        'AQI': double.parse(values['AQI'].toString()),
+        'O2': double.parse(values['MQ2'].toString()),
+        'CO2': double.parse(values['MQ9'].toString()),
       };
-      (values.length <= 2)
+      (values.length <= 8)
           ? values.addEntries(value.entries)
           : print('Read Sucessful.');
     });
@@ -64,277 +92,394 @@ class HomePageState extends State<Home> {
     return (darkmode) ? Colors.black87 : MaterialColors.bgColorScreen;
   }
 
+  _geto2values() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _geto2angle() {
+    double aqi =
+        (values == null) ? 601.0 : double.parse(values['O2'].toString());
+    double angle = 360 - ((aqi / 601) * 360);
+    return angle;
+  }
+
+  _geto2color1() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent[700];
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent[700];
+    if (aqi >= 601) return Colors.red[800];
+  }
+
+  _geto2color2() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent[400];
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent[600];
+    if (aqi >= 601) return Colors.red[600];
+  }
+
+  _geto2color3() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent;
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent;
+    if (aqi >= 601) return Colors.red;
+  }
+
+  _getco2values() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getco2angle() {
+    double aqi =
+        (values == null) ? 501.0 : double.parse(values['CO2'].toString());
+    double angle = 360 - ((aqi / 501) * 360);
+    return angle;
+  }
+
+  _getco2color1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent[700];
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent[700];
+    if (aqi >= 501) return Colors.red[800];
+  }
+
+  _getco2color2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent[400];
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent[600];
+    if (aqi >= 501) return Colors.red[600];
+  }
+
+  _getco2color3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent;
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent;
+    if (aqi >= 501) return Colors.red;
+  }
+
+  _getaqivalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    double percentage = 100 - ((aqi / 351) * 100);
+    return "${percentage.toStringAsFixed(1).toString()}%\nAQ Index: ${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getaqiangle() {
+    double aqi =
+        (values == null) ? 351.0 : double.parse(values['AQI'].toString());
+    double angle = 360 - ((aqi / 351) * 360);
+    return angle;
+  }
+
+  _getaqicolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[700];
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent[700];
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange[700];
+    if (aqi >= 151 && aqi <= 200) return Colors.red[800];
+    if (aqi >= 201 && aqi <= 300) return Colors.purple[700];
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
+  }
+
+  _getaqicolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[400];
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent[400];
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange[600];
+    if (aqi >= 151 && aqi <= 200) return Colors.red[600];
+    if (aqi >= 201 && aqi <= 300) return Colors.purple[600];
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
+  }
+
+  _getaqicolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent;
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent;
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange;
+    if (aqi >= 151 && aqi <= 200) return Colors.red;
+    if (aqi >= 201 && aqi <= 300) return Colors.purple;
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
+  }
+
   @override
   Widget build(BuildContext context) {
     (Count == 0) ? _getusername() : print("Welcome.");
-    return Scaffold(
-        appBar: Navbar(
-          title: "Home",
-          bgColor: Colors.blue,
-          transparent: false,
-        ),
-        backgroundColor:
-            (darkmode != null) ? _getcolor() : MaterialColors.bgColorScreen,
-        drawer: MaterialDrawer(currentPage: "Home", user: user, imgUrl: imgUrl),
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/img/bg.png"),
-              fit: BoxFit.fitWidth,
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            appBar: Navbar(
+              title: "Home",
+              bgColor: Color.fromRGBO(0, 86, 142, 1),
+              transparent: false,
             ),
-          ),
-          padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Center(
-                    child: Stack(
-                      overflow: Overflow.visible,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 175,
-                            height: 175,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(200.0),
+            backgroundColor:
+                (darkmode != null) ? _getcolor() : MaterialColors.bgColorScreen,
+            drawer:
+                MaterialDrawer(currentPage: "Home", user: user, imgUrl: imgUrl),
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/img/bg.png"),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Center(
+                        child: Stack(
+                          overflow: Overflow.visible,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 175,
+                                height: 175,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(200.0),
+                                  ),
+                                  border: new Border.all(
+                                      width: 4,
+                                      color: Colors.blue[500].withOpacity(0.2)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Air Quality',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "Bosch",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        letterSpacing: 0.0,
+                                        color: Colors.blue[300],
+                                      ),
+                                    ),
+                                    (values == null)
+                                        ? CupertinoActivityIndicator(
+                                            radius: 10, animating: true)
+                                        : Text(
+                                            _getaqivalues(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontFamily: "Bosch",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              letterSpacing: 0.0,
+                                              color: _getaqicolor1(),
+                                            ),
+                                          ),
+                                  ],
+                                ),
                               ),
-                              border: new Border.all(
-                                  width: 4,
-                                  color: Colors.blue[500].withOpacity(0.2)),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Air Quality',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: "Bosch",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    letterSpacing: 0.0,
-                                    color: Colors.blue[300],
-                                  ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: CustomPaint(
+                                painter: CurvePainter(colors: [
+                                  _getaqicolor1(),
+                                  _getaqicolor2(),
+                                  _getaqicolor3(),
+                                ], angle: _getaqiangle()),
+                                child: SizedBox(
+                                  width: 183,
+                                  height: 183,
                                 ),
-                                (values == null)
-                                    ? CupertinoActivityIndicator(
-                                        radius: 10, animating: true)
-                                    : Text(
-                                        '83%\nAQ Index: ${values['AQI']}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontFamily: "Bosch",
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          letterSpacing: 0.0,
-                                          color: Colors.green[800]
-                                              .withOpacity(0.9),
-                                        ),
-                                      ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: CustomPaint(
-                            painter: CurvePainter(colors: [
-                              Colors.blue[900],
-                              Color.fromRGBO(138, 152, 232, 1),
-                              Color.fromRGBO(138, 152, 232, 1)
-                            ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
-                            child: SizedBox(
-                              width: 183,
-                              height: 183,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 200),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Center(
-                            child: Stack(
-                              overflow: Overflow.visible,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: 110,
-                                    height: 110,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(200.0),
-                                      ),
-                                      border: new Border.all(
-                                          width: 4,
-                                          color: Colors.blue[500]
-                                              .withOpacity(0.2)),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Oxygen\n(O2)',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Bosch",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            letterSpacing: 0.0,
-                                            color: Colors.blue[300],
+                    Padding(
+                      padding: EdgeInsets.only(top: 200),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                child: Stack(
+                                  overflow: Overflow.visible,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width: 110,
+                                        height: 110,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(200.0),
                                           ),
+                                          border: new Border.all(
+                                              width: 4,
+                                              color: Colors.blue[500]
+                                                  .withOpacity(0.2)),
                                         ),
-                                        (values == null)
-                                            ? CupertinoActivityIndicator(
-                                                radius: 10, animating: true)
-                                            : Text(
-                                                '${values['O2']}',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: "Bosch",
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  letterSpacing: 0.0,
-                                                  color: Colors.green[800]
-                                                      .withOpacity(0.9),
-                                                ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'Oxygen\n(O2)',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Bosch",
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                letterSpacing: 0.0,
+                                                color: Colors.blue[300],
                                               ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: CustomPaint(
-                                    painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
-                                    child: SizedBox(
-                                      width: 118,
-                                      height: 118,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Center(
-                            child: Stack(
-                              overflow: Overflow.visible,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: 110,
-                                    height: 110,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(200.0),
+                                            ),
+                                            (values == null)
+                                                ? CupertinoActivityIndicator(
+                                                    radius: 10, animating: true)
+                                                : Text(
+                                                    _geto2values(),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily: "Bosch",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                      letterSpacing: 0.0,
+                                                      color: _geto2color1(),
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
                                       ),
-                                      border: new Border.all(
-                                          width: 4,
-                                          color: Colors.blue[500]
-                                              .withOpacity(0.2)),
                                     ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Carbon\nDioxide\n(CO2)',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Bosch",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            letterSpacing: 0.0,
-                                            color: Colors.blue[300],
-                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CustomPaint(
+                                        painter: CurvePainter(colors: [
+                                          _geto2color1(),
+                                          _geto2color2(),
+                                          _geto2color3()
+                                        ], angle: _geto2angle()),
+                                        child: SizedBox(
+                                          width: 118,
+                                          height: 118,
                                         ),
-                                        (values == null)
-                                            ? CupertinoActivityIndicator(
-                                                radius: 10, animating: true)
-                                            : Text(
-                                                '${values['CO2']}',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: "Bosch",
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  letterSpacing: 0.0,
-                                                  color: Colors.red[800]
-                                                      .withOpacity(0.9),
-                                                ),
-                                              ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: CustomPaint(
-                                    painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
-                                    child: SizedBox(
-                                      width: 118,
-                                      height: 118,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                child: Stack(
+                                  overflow: Overflow.visible,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width: 110,
+                                        height: 110,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(200.0),
+                                          ),
+                                          border: new Border.all(
+                                              width: 4,
+                                              color: Colors.blue[500]
+                                                  .withOpacity(0.2)),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'Carbon\nDioxide\n(CO2)',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: "Bosch",
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                letterSpacing: 0.0,
+                                                color: Colors.blue[300],
+                                              ),
+                                            ),
+                                            (values == null)
+                                                ? CupertinoActivityIndicator(
+                                                    radius: 10, animating: true)
+                                                : Text(
+                                                    _getco2values(),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontFamily: "Bosch",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                      letterSpacing: 0.0,
+                                                      color: _getco2color1(),
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CustomPaint(
+                                        painter: CurvePainter(colors: [
+                                          _getco2color1(),
+                                          _getco2color2(),
+                                          _getco2color3()
+                                        ], angle: _getco2angle()),
+                                        child: SizedBox(
+                                          width: 118,
+                                          height: 118,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ]),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 370, 10, 10),
+                            child: SizedBox(
+                                height: 350,
+                                width: 350,
+                                child: new CustomRoundedBars.withSampleData()),
                           ),
-                        ),
-                      ]),
+                        ]),
+                  ],
                 ),
-                Expanded(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 370, 10, 10),
-                          child: SizedBox(
-                              height: 350,
-                              width: 350,
-                              child: new CustomRoundedBars.withSampleData()),
-                        ),
-                      ]),
-                ),
-              ],
-            ),
-          ),
-        ));
+              ),
+            )));
   }
 }
 

@@ -28,10 +28,6 @@ class DrawerTileState extends State<DrawerTile> {
     });
   }
 
-  _getcolor1() {
-    return (darkmode) ? Colors.black : Colors.white;
-  }
-
   _getcolor2() {
     return (darkmode) ? Colors.white : Colors.black;
   }
@@ -46,7 +42,9 @@ class DrawerTileState extends State<DrawerTile> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             margin: EdgeInsets.only(bottom: 6),
             decoration: BoxDecoration(
-                color: widget.isSelected ? Colors.blue : Colors.transparent,
+                color: widget.isSelected
+                    ? Color.fromRGBO(0, 86, 142, 1)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.all(Radius.circular(4))),
             child: Row(
               children: [
@@ -55,14 +53,14 @@ class DrawerTileState extends State<DrawerTile> {
                   child: Icon(widget.icon,
                       size: 20,
                       color: widget.isSelected
-                          ? ((darkmode != null) ? _getcolor1() : Colors.black)
+                          ? ((darkmode != null) ? Colors.white : Colors.black)
                           : _getcolor2()),
                 ),
                 Text(widget.title,
                     style: TextStyle(
                         fontSize: 15,
                         color: widget.isSelected
-                            ? ((darkmode != null) ? _getcolor1() : Colors.black)
+                            ? ((darkmode != null) ? Colors.white : Colors.black)
                             : _getcolor2())),
               ],
             )));

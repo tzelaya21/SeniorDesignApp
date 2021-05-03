@@ -43,21 +43,337 @@ class Room2PageState extends State<Room2> {
     setState(() {
       values = val ?? null;
       Map<String, dynamic> value = {
-        'AQI': 41,
-        'O2': '72%',
-        'CO2': '4%',
-        'Dust': '10%',
-        'Propane': '198',
-        'Gas': '69',
+        'AQI': double.parse(values['AQI'].toString()),
+        'O2': double.parse(values['MQ2'].toString()),
+        'CO2': double.parse(values['MQ9'].toString()),
+        'Temp': double.parse(values['Temp'].toString()),
+        'Gas': double.parse(values['MQ5'].toString())
       };
       (values.length <= 7)
           ? values.addEntries(value.entries)
-          : print('Read Sucessful.');
+          : print('Read failed.');
     });
   }
 
   _getcolor() {
     return darkmode ? Colors.black : MaterialColors.bgColorScreen;
+  }
+
+  _geto2values() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _geto2angle() {
+    double aqi =
+        (values == null) ? 601.0 : double.parse(values['O2'].toString());
+    double angle = 360 - ((aqi / 601) * 360);
+    return angle;
+  }
+
+  _geto2color1() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent[700];
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent[700];
+    if (aqi >= 601) return Colors.red[800];
+  }
+
+  _geto2color2() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent[400];
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent[600];
+    if (aqi >= 601) return Colors.red[600];
+  }
+
+  _geto2color3() {
+    double aqi = (values == null) ? 0.0 : double.parse(values['O2'].toString());
+    if (aqi >= 0 && aqi <= 325) return Colors.lightGreenAccent;
+    if (aqi >= 326 && aqi <= 600) return Colors.yellowAccent;
+    if (aqi >= 601) return Colors.red;
+  }
+
+  _getco2values() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getco2angle() {
+    double aqi =
+        (values == null) ? 501.0 : double.parse(values['CO2'].toString());
+    double angle = 360 - ((aqi / 501) * 360);
+    return angle;
+  }
+
+  _getco2color1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent[700];
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent[700];
+    if (aqi >= 501) return Colors.red[800];
+  }
+
+  _getco2color2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent[400];
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent[600];
+    if (aqi >= 501) return Colors.red[600];
+  }
+
+  _getco2color3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['CO2'].toString());
+    if (aqi >= 0 && aqi <= 350) return Colors.lightGreenAccent;
+    if (aqi >= 351 && aqi <= 500) return Colors.yellowAccent;
+    if (aqi >= 501) return Colors.red;
+  }
+
+  _gettempvalues(int type) {
+    if (type == 1) {
+      double aqi =
+          (values == null) ? 0.0 : double.parse(values['Temp'].toString());
+      return "${aqi.toStringAsFixed(1).toString()}";
+    } else {
+      double aqi =
+          (values == null) ? 0.0 : double.parse(values['Temp'].toString());
+      aqi = (aqi * (9 / 5)) + 32;
+      return "${aqi.toStringAsFixed(1).toString()}";
+    }
+  }
+
+  _gettempangle() {
+    double aqi =
+        (values == null) ? 110.0 : double.parse(values['Temp'].toString());
+    double angle = 360 - ((aqi / 110) * 360);
+    return angle;
+  }
+
+  _gettempcolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Temp'].toString());
+    if (aqi >= -10 && aqi <= 25) return Colors.lightGreenAccent[700];
+    if (aqi >= 26 && aqi <= 65) return Colors.yellowAccent[700];
+    if (aqi >= 66) return Colors.red[800];
+  }
+
+  _gettempcolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Temp'].toString());
+    if (aqi >= -10 && aqi <= 25) return Colors.lightGreenAccent[400];
+    if (aqi >= 26 && aqi <= 65) return Colors.yellowAccent[600];
+    if (aqi >= 66) return Colors.red[600];
+  }
+
+  _gettempcolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Temp'].toString());
+    if (aqi >= -10 && aqi <= 25) return Colors.lightGreenAccent;
+    if (aqi >= 26 && aqi <= 65) return Colors.yellowAccent;
+    if (aqi >= 66) return Colors.red;
+  }
+
+  _getdustvalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['PPM'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getdustangle() {
+    double aqi =
+        (values == null) ? 1051.0 : double.parse(values['PPM'].toString());
+    double angle = 360 - ((aqi / 110) * 360);
+    return angle;
+  }
+
+  _getdustcolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['PPM'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[700];
+    if (aqi >= 51 && aqi <= 150) return Colors.limeAccent[700];
+    if (aqi >= 151 && aqi <= 1050) return Colors.yellowAccent[700];
+    if (aqi >= 1051) return Colors.red[800];
+  }
+
+  _getdustcolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['PPM'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[400];
+    if (aqi >= 51 && aqi <= 150) return Colors.limeAccent[400];
+    if (aqi >= 151 && aqi <= 1050) return Colors.yellowAccent[600];
+    if (aqi >= 1051) return Colors.red[600];
+  }
+
+  _getdustcolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['PPM'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent;
+    if (aqi >= 51 && aqi <= 150) return Colors.limeAccent;
+    if (aqi >= 151 && aqi <= 1050) return Colors.yellowAccent;
+    if (aqi >= 1051) return Colors.red;
+  }
+
+  _gethumidityvalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Humidity'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _gethumidityangle() {
+    double aqi =
+        (values == null) ? 76.0 : double.parse(values['Humidity'].toString());
+    double angle = 360 - ((aqi / 76) * 360);
+    return angle;
+  }
+
+  _gethumiditycolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Humidity'].toString());
+    if (aqi >= 0 && aqi <= 55) return Colors.lightGreenAccent[700];
+    if (aqi >= 56 && aqi <= 70) return Colors.yellowAccent[700];
+    if (aqi >= 71) return Colors.red[800];
+  }
+
+  _gethumiditycolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Humidity'].toString());
+    if (aqi >= 0 && aqi <= 55) return Colors.lightGreenAccent[400];
+    if (aqi >= 56 && aqi <= 70) return Colors.yellowAccent[600];
+    if (aqi >= 71) return Colors.red[600];
+  }
+
+  _gethumiditycolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Humidity'].toString());
+    if (aqi >= 0 && aqi <= 55) return Colors.lightGreenAccent;
+    if (aqi >= 56 && aqi <= 70) return Colors.yellowAccent;
+    if (aqi >= 71) return Colors.red;
+  }
+
+  _getpropanevalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['MQ9'].toString());
+    aqi -= 15;
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getpropaneangle() {
+    double aqi =
+        (values == null) ? 276 : double.parse(values['MQ9'].toString());
+    aqi -= 15;
+    double angle = 360 - ((aqi / 276) * 360);
+    return angle;
+  }
+
+  _getpropanecolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['MQ9'].toString());
+    aqi -= 15;
+    if (aqi >= 0 && aqi <= 190) return Colors.lightGreenAccent[700];
+    if (aqi >= 191 && aqi <= 275) return Colors.yellowAccent[700];
+    if (aqi >= 276) return Colors.red[800];
+  }
+
+  _getpropanecolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['MQ9'].toString());
+    aqi -= 15;
+    if (aqi >= 0 && aqi <= 190) return Colors.lightGreenAccent[400];
+    if (aqi >= 191 && aqi <= 275) return Colors.yellowAccent[600];
+    if (aqi >= 276) return Colors.red[600];
+  }
+
+  _getpropanecolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['MQ9'].toString());
+    aqi -= 15;
+    if (aqi >= 0 && aqi <= 190) return Colors.lightGreenAccent;
+    if (aqi >= 191 && aqi <= 275) return Colors.yellowAccent;
+    if (aqi >= 276) return Colors.red;
+  }
+
+  _getgasvalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Gas'].toString());
+    return "${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getgasangle() {
+    double aqi =
+        (values == null) ? 201.0 : double.parse(values['Gas'].toString());
+    double angle = 360 - ((aqi / 201) * 360);
+    return angle;
+  }
+
+  _getgascolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Gas'].toString());
+    if (aqi >= 0 && aqi <= 125) return Colors.lightGreenAccent[700];
+    if (aqi >= 126 && aqi <= 200) return Colors.yellowAccent[700];
+    if (aqi >= 201) return Colors.red[800];
+  }
+
+  _getgascolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Gas'].toString());
+    if (aqi >= 0 && aqi <= 125) return Colors.lightGreenAccent[400];
+    if (aqi >= 126 && aqi <= 200) return Colors.yellowAccent[600];
+    if (aqi >= 201) return Colors.red[600];
+  }
+
+  _getgascolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['Gas'].toString());
+    if (aqi >= 0 && aqi <= 125) return Colors.lightGreenAccent;
+    if (aqi >= 126 && aqi <= 200) return Colors.yellowAccent;
+    if (aqi >= 201) return Colors.red;
+  }
+
+  _getaqivalues() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    double percentage = 100 - ((aqi / 351) * 100);
+    return "${percentage.toStringAsFixed(1).toString()}%\nAQ Index: ${aqi.toStringAsFixed(1).toString()}";
+  }
+
+  _getaqiangle() {
+    double aqi =
+        (values == null) ? 351.0 : double.parse(values['AQI'].toString());
+    double angle = 360 - ((aqi / 351) * 360);
+    return angle;
+  }
+
+  _getaqicolor1() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[700];
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent[700];
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange[700];
+    if (aqi >= 151 && aqi <= 200) return Colors.red[800];
+    if (aqi >= 201 && aqi <= 300) return Colors.purple[700];
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
+  }
+
+  _getaqicolor2() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent[400];
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent[400];
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange[600];
+    if (aqi >= 151 && aqi <= 200) return Colors.red[600];
+    if (aqi >= 201 && aqi <= 300) return Colors.purple[600];
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
+  }
+
+  _getaqicolor3() {
+    double aqi =
+        (values == null) ? 0.0 : double.parse(values['AQI'].toString());
+    if (aqi >= 0 && aqi <= 50) return Colors.lightGreenAccent;
+    if (aqi >= 51 && aqi <= 100) return Colors.yellowAccent;
+    if (aqi >= 101 && aqi <= 150) return Colors.deepOrange;
+    if (aqi >= 151 && aqi <= 200) return Colors.red;
+    if (aqi >= 201 && aqi <= 300) return Colors.purple;
+    if (aqi >= 301) return Color.fromARGB(255, 126, 0, 35);
   }
 
   @override
@@ -66,7 +382,7 @@ class Room2PageState extends State<Room2> {
     return Scaffold(
         appBar: Navbar(
           title: "Room-2",
-          bgColor: Colors.blue,
+          bgColor: Color.fromRGBO(0, 86, 142, 1),
         ),
         backgroundColor:
             darkmode != null ? _getcolor() : MaterialColors.bgColorScreen,
@@ -122,15 +438,14 @@ class Room2PageState extends State<Room2> {
                                     ? CupertinoActivityIndicator(
                                         radius: 10, animating: true)
                                     : Text(
-                                        '83%\nAQ Index: ${values['AQI']}',
+                                        _getaqivalues(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: "Bosch",
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                           letterSpacing: 0.0,
-                                          color: Colors.green[800]
-                                              .withOpacity(0.9),
+                                          color: _getaqicolor1(),
                                         ),
                                       ),
                               ],
@@ -141,10 +456,10 @@ class Room2PageState extends State<Room2> {
                           padding: const EdgeInsets.all(4.0),
                           child: CustomPaint(
                             painter: CurvePainter(colors: [
-                              Colors.blue[900],
-                              Color.fromRGBO(138, 152, 232, 1),
-                              Color.fromRGBO(138, 152, 232, 1)
-                            ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                              _getaqicolor1(),
+                              _getaqicolor2(),
+                              _getaqicolor3()
+                            ], angle: _getaqiangle()),
                             child: SizedBox(
                               width: 183,
                               height: 183,
@@ -203,15 +518,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${values['O2']}',
+                                                _geto2values(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.green[800]
-                                                      .withOpacity(0.9),
+                                                  color: _geto2color1(),
                                                 ),
                                               ),
                                       ],
@@ -222,10 +536,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _geto2color1(),
+                                      _geto2color2(),
+                                      _geto2color3()
+                                    ], angle: _geto2angle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -278,15 +592,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${values['CO2']}',
+                                                _getco2values(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.red[800]
-                                                      .withOpacity(0.9),
+                                                  color: _getco2color1(),
                                                 ),
                                               ),
                                       ],
@@ -297,10 +610,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _getco2color1(),
+                                      _getco2color2(),
+                                      _getco2color3()
+                                    ], angle: _getco2angle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -361,15 +674,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${values['Dust']}',
+                                                _getdustvalues(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.green[800]
-                                                      .withOpacity(0.9),
+                                                  color: _getdustcolor1(),
                                                 ),
                                               ),
                                       ],
@@ -380,10 +692,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _getdustcolor1(),
+                                      _getdustcolor2(),
+                                      _getdustcolor3()
+                                    ], angle: _getdustangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -436,15 +748,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${double.parse(values['PPM'].toString()).toStringAsFixed(1).toString()}',
+                                                _gethumidityvalues(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.red[800]
-                                                      .withOpacity(0.9),
+                                                  color: _gethumiditycolor1(),
                                                 ),
                                               ),
                                       ],
@@ -455,10 +766,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _gethumiditycolor1(),
+                                      _gethumiditycolor2(),
+                                      _gethumiditycolor3()
+                                    ], angle: _gethumidityangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -519,15 +830,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${(values['Propane']).toString()}',
+                                                _getpropanevalues(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.green[800]
-                                                      .withOpacity(0.9),
+                                                  color: _getpropanecolor1(),
                                                 ),
                                               ),
                                       ],
@@ -538,10 +848,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _getpropanecolor1(),
+                                      _getpropanecolor2(),
+                                      _getpropanecolor3()
+                                    ], angle: _getpropaneangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -594,15 +904,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${(values['Gas']).toString()}',
+                                                _getgasvalues(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.red[800]
-                                                      .withOpacity(0.9),
+                                                  color: _getgascolor1(),
                                                 ),
                                               ),
                                       ],
@@ -613,10 +922,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _getgascolor1(),
+                                      _getgascolor2(),
+                                      _getgascolor3()
+                                    ], angle: _getgasangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -677,15 +986,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${double.parse(values['Temp'].toString()).toStringAsFixed(1).toString()} °C',
+                                                _gettempvalues(1) + ' °C',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.green[800]
-                                                      .withOpacity(0.9),
+                                                  color: _gettempcolor1(),
                                                 ),
                                               ),
                                       ],
@@ -696,10 +1004,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _gettempcolor1(),
+                                      _gettempcolor2(),
+                                      _gettempcolor3()
+                                    ], angle: _gettempangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,
@@ -752,15 +1060,14 @@ class Room2PageState extends State<Room2> {
                                             ? CupertinoActivityIndicator(
                                                 radius: 10, animating: true)
                                             : Text(
-                                                '${double.parse(((values['Temp'] * (9 / 5)) + 32).toString()).toStringAsFixed(1).toString()} °F',
+                                                _gettempvalues(2) + ' °F',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: "Bosch",
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16,
                                                   letterSpacing: 0.0,
-                                                  color: Colors.red[800]
-                                                      .withOpacity(0.9),
+                                                  color: _gettempcolor1(),
                                                 ),
                                               ),
                                       ],
@@ -771,10 +1078,10 @@ class Room2PageState extends State<Room2> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: CustomPaint(
                                     painter: CurvePainter(colors: [
-                                      Colors.blue[900],
-                                      Color.fromRGBO(138, 152, 232, 1),
-                                      Color.fromRGBO(138, 152, 232, 1)
-                                    ], angle: 140 + (360 - 140) * (1.0 - 0.9)),
+                                      _gettempcolor1(),
+                                      _gettempcolor2(),
+                                      _gettempcolor3()
+                                    ], angle: _gettempangle()),
                                     child: SizedBox(
                                       width: 118,
                                       height: 118,

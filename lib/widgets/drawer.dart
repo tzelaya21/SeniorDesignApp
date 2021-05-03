@@ -49,12 +49,14 @@ class _DrawerState extends State<MaterialDrawer> {
         child: Container(
             color: (darkmode != null) ? _getcolor1() : Colors.white,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 DrawerHeader(
-                    decoration: BoxDecoration(color: Colors.blue),
+                    decoration:
+                        BoxDecoration(color: Color.fromRGBO(0, 86, 142, 1)),
                     child: Container(
                         width: 300.0,
-                        color: Colors.blue,
+                        color: Color.fromRGBO(0, 86, 142, 1),
                         padding: EdgeInsets.symmetric(horizontal: 0.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -75,9 +77,11 @@ class _DrawerState extends State<MaterialDrawer> {
                           ],
                         ))),
                 Expanded(
+                  flex: 1,
                   child: Padding(
                     padding: EdgeInsets.only(top: 8, left: 8, right: 8),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         DrawerTile(
                           icon: Icons.home,

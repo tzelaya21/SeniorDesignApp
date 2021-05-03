@@ -19,7 +19,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
       this.noShadow = false,
       this.bgColor = Colors.white});
 
-  final double _prefferedHeight = 55.0;
+  final double _prefferedHeight = 50.0;
 
   @override
   _NavbarState createState() => _NavbarState();
@@ -61,10 +61,6 @@ class _NavbarState extends State<Navbar> {
         ]);
   }
 
-  _getcolor() {
-    return (darkmode) ? Colors.black : Colors.white;
-  }
-
   @override
   Widget build(BuildContext context) {
     _getuserpreferneces();
@@ -88,10 +84,8 @@ class _NavbarState extends State<Navbar> {
                                       ? Icons.menu
                                       : Icons.arrow_back_ios,
                                   color: !widget.transparent
-                                      ? ((darkmode != null)
-                                          ? _getcolor()
-                                          : Colors.black)
-                                      : Colors.white,
+                                      ? Colors.white
+                                      : Colors.transparent,
                                   size: 24.0),
                               onPressed: () {
                                 if (!widget.backButton)
@@ -104,10 +98,8 @@ class _NavbarState extends State<Navbar> {
                             child: Text(widget.title,
                                 style: TextStyle(
                                     color: !widget.transparent
-                                        ? ((darkmode != null)
-                                            ? _getcolor()
-                                            : Colors.black)
-                                        : Colors.white,
+                                        ? Colors.white
+                                        : Colors.transparent,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18.0)),
                           ),

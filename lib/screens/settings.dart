@@ -53,7 +53,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
         appBar: Navbar(
           title: "Settings",
-          bgColor: Colors.blue,
+          bgColor: Color.fromRGBO(0, 86, 142, 1),
         ),
         drawer:
             MaterialDrawer(currentPage: "Settings", user: user, imgUrl: imgUrl),

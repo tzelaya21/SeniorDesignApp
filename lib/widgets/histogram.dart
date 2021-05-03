@@ -16,7 +16,6 @@ class CustomRoundedBars extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return new charts.BarChart(
@@ -34,13 +33,13 @@ class CustomRoundedBars extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<OrdinalSales, String>> _createSampleData() {
     final data = [
-      new OrdinalSales('Mon', 5),
-      new OrdinalSales('Tue', 25),
-      new OrdinalSales('Wed', 100),
-      new OrdinalSales('Thu', 75),
-      new OrdinalSales('Fri', 75),
-      new OrdinalSales('Sat', 75),
-      new OrdinalSales('Sun', 75),
+      new OrdinalSales('Tue\n4/27', 25),
+      new OrdinalSales('Wed\n4/28', 100),
+      new OrdinalSales('Thu\n4/29', 75),
+      new OrdinalSales('Fri\n4/30', 75),
+      new OrdinalSales('Sat\n5/1', 75),
+      new OrdinalSales('Sun\n5/2', 75),
+      new OrdinalSales('Mon\n5/3', 5),
     ];
 
     return [

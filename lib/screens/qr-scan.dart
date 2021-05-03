@@ -44,7 +44,7 @@ class _QRScanPageState extends State<QRScanPage> {
     return Scaffold(
         appBar: Navbar(
           title: "QR-Code Scanner",
-          bgColor: Colors.blue,
+          bgColor: Color.fromRGBO(0, 86, 142, 1),
         ),
         backgroundColor:
             (darkmode != null) ? _getcolor() : MaterialColors.bgColorScreen,

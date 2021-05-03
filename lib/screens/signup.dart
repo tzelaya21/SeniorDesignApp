@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:material_kit_flutter/widgets/animatedAppBar.dart';
-import 'package:material_kit_flutter/widgets/navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:material_kit_flutter/widgets/bezierContainer.dart';
@@ -21,32 +19,9 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
-  // ignore: non_constant_identifier_names
-  AnimationController _ColorAnimationController;
-
-  // ignore: non_constant_identifier_names
-  AnimationController _TextAnimationController;
-  Animation _colorTween, _homeTween, _drawerTween;
-
+class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
-    _ColorAnimationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 0));
-    _colorTween = ColorTween(
-            begin: Colors.transparent,
-            end: (darkmode != null) ? _gettextcolor1() : Colors.white)
-        .animate(_ColorAnimationController);
-    _drawerTween = ColorTween(
-            begin: (darkmode != null) ? _gettextcolor1() : Colors.white,
-            end: Colors.black)
-        .animate(_ColorAnimationController);
-    _homeTween = ColorTween(
-            begin: (darkmode != null) ? _gettextcolor1() : Colors.white,
-            end: Colors.blue)
-        .animate(_ColorAnimationController);
-    _TextAnimationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 0));
     setState(() {
       switchValueOne = false;
     });
@@ -92,45 +67,8 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
     return (darkmode) ? Colors.white : Colors.black;
   }
 
-  _gettextcolor1() {
-    return (darkmode) ? Color(0xfff7892b) : Colors.white;
-  }
-
-  _gettextcolor2() {
-    return (darkmode) ? Color(0xfff7892b) : Colors.black;
-  }
-
   _gettxtcolor() {
     return (darkmode) ? Color(0xfff7892b) : Colors.black;
-  }
-
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
-  bool scrollListener(ScrollNotification scrollInfo) {
-    bool scroll = false;
-    if (darkmode != null) {
-      setState(() {
-        _colorTween = ColorTween(
-                begin: Colors.transparent,
-                end: (darkmode != null) ? _gettextcolor1() : Colors.white)
-            .animate(_ColorAnimationController);
-        _drawerTween = ColorTween(
-                begin: (darkmode != null) ? _gettextcolor() : Colors.white,
-                end: Colors.black)
-            .animate(_ColorAnimationController);
-        _homeTween = ColorTween(
-                begin: Colors.white,
-                end: (darkmode != null) ? _gettextcolor2() : Colors.blue)
-            .animate(_ColorAnimationController);
-      });
-    }
-    if (scrollInfo.metrics.axis == Axis.vertical) {
-      _ColorAnimationController.animateTo(scrollInfo.metrics.pixels / 80);
-
-      _TextAnimationController.animateTo(scrollInfo.metrics.pixels);
-      return scroll = true;
-    }
-    return scroll;
   }
 
   bool _isprocessing = false, switchValueOne, darkmode;
@@ -621,122 +559,99 @@ class _SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
     Navigator.pop(context);
   }
 
-  _getappbarcolor() {
-    return (darkmode) ? Colors.white : null;
-  }
-
   @override
   Widget build(BuildContext context) {
     _getuserpreferneces();
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor:
-            (darkmode != null) ? _getcolor() : MaterialColors.bgColorScreen,
-        extendBodyBehindAppBar: true,
-        appBar: Navbar(
-          title: "Sign-up",
-          backButton: true,
-          bgColor: (darkmode != null) ? _getappbarcolor() : null,
-        ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: scrollListener,
-          child: Container(
-            height: height,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: -MediaQuery.of(context).size.height * .15,
-                  right: -MediaQuery.of(context).size.width * .45,
-                  child: BezierContainer(),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(height: height * .15),
-                        _title(),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        _emailPasswordWidget(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                            onTap: () => {
-                                  if (_isprocessing)
-                                    {}
-                                  else
-                                    {_showChoiceDialog(context)}
-                                },
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
-                                    boxShadow: (darkmode != null)
-                                        ? _getshadowcolor()
-                                        : <BoxShadow>[
-                                            BoxShadow(
-                                                color: Colors.grey.shade200,
-                                                offset: Offset(2, 4),
-                                                blurRadius: 5,
-                                                spreadRadius: 2)
-                                          ],
-                                    gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Color.fromRGBO(0, 86, 142, 1),
-                                          Color(0xfff7892b)
-                                        ])),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                      child: Icon(
-                                        Icons.camera_alt_outlined,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Select Profile Picture',
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                  ],
-                                ))),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _submitButton(),
-                        SizedBox(height: height * .07),
-                        _loginAccountLabel(),
-                      ],
-                    ),
-                  ),
-                ),
-                AnimatedAppBar(
-                  drawerTween: _drawerTween,
-                  colorTween: _colorTween,
-                  homeTween: _homeTween,
-                  onPressed: () {
-                    Navigator.popAndPushNamed(context, "/login");
-                  },
-                  colorAnimationController: _ColorAnimationController,
-                  iconTween: _colorTween,
-                  workOutTween: _colorTween,
-                )
-              ],
+      backgroundColor:
+          (darkmode != null) ? _getcolor() : MaterialColors.bgColorScreen,
+      body: Container(
+        height: height,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: -MediaQuery.of(context).size.height * .15,
+              right: -MediaQuery.of(context).size.width * .45,
+              child: BezierContainer(),
             ),
-          ),
-        ));
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: height * .2),
+                    _title(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    _emailPasswordWidget(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                        onTap: () => {
+                              if (_isprocessing)
+                                {}
+                              else
+                                {_showChoiceDialog(context)}
+                            },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                boxShadow: (darkmode != null)
+                                    ? _getshadowcolor()
+                                    : <BoxShadow>[
+                                        BoxShadow(
+                                            color: Colors.grey.shade200,
+                                            offset: Offset(2, 4),
+                                            blurRadius: 5,
+                                            spreadRadius: 2)
+                                      ],
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color.fromRGBO(0, 86, 142, 1),
+                                      Color(0xfff7892b)
+                                    ])),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                                Text(
+                                  'Select Profile Picture',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                              ],
+                            ))),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _submitButton(),
+                    SizedBox(height: height * .07),
+                    _loginAccountLabel(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
