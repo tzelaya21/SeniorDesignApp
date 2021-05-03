@@ -1051,7 +1051,7 @@ class Room2PageState extends State<Room2> {
                                           style: TextStyle(
                                             fontFamily: "Bosch",
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             letterSpacing: 0.0,
                                             color: Colors.blue[300],
                                           ),
