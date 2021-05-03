@@ -33,13 +33,13 @@ class CustomRoundedBars extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<OrdinalSales, String>> _createSampleData() {
     final data = [
-      new OrdinalSales('Tue\n4/27', 25),
-      new OrdinalSales('Wed\n4/28', 100),
-      new OrdinalSales('Thu\n4/29', 75),
-      new OrdinalSales('Fri\n4/30', 75),
-      new OrdinalSales('Sat\n5/1', 75),
-      new OrdinalSales('Sun\n5/2', 75),
-      new OrdinalSales('Mon\n5/3', 5),
+      new OrdinalSales('Tue\n4/27', 56),
+      new OrdinalSales('Wed\n4/28', 79),
+      new OrdinalSales('Thu\n4/29', 97),
+      new OrdinalSales('Fri\n4/30', 91),
+      new OrdinalSales('Sat\n5/1', 69),
+      new OrdinalSales('Sun\n5/2', 78),
+      new OrdinalSales('Mon\n5/3', 72),
     ];
 
     return [
