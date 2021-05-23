@@ -43,6 +43,9 @@ Within the download you'll find the following directories and files:
 └── pubspec.yaml
 ```
 
+For the Air Quality Mobile Application that I have created to monitor the Air Quality, I used the Flutter platform by Google, which uses dart language to build mobile applications for both IOS and Android. 
+
+
 Interface /UI 
 
 The interface of the Mobile Application is very simple yet attractive. We have focused on the common user and keep this user-friendly so that the user doesn’t have to put extra effort in understanding the application’s interface. 
